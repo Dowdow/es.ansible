@@ -1,0 +1,10 @@
+---
+- name: Deploy website
+  hosts: eventsonar
+  vars:
+    ansistrano_deploy_from: "{{ playbook_dir }}/website/"
+    ansistrano_deploy_to: "."
+    ansistrano_keep_releases: 3
+    ansistrano_allow_anonymous_stats: no
+  roles:
+  - { role: ansistrano.deploy }

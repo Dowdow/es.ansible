@@ -1,0 +1,48 @@
+---
+- name: Prepare website
+  hosts: local
+  connection: local
+  tasks:
+    # Vérifier que php, composer, node et npm sont installés
+    - name: LOCAL - Clean directory
+      file:
+        path: "{{ playbook_dir }}/website"
+        state: absent
+
+    - name: LOCAL - Clone repository
+      git:
+        clone: yes
+        repo: git@github.com:event-sonar/website.git
+        dest: "{{ playbook_dir }}/website"
+        key_file: ~/.ssh/id_rsa
+        accept_hostkey: yes
+
+    - name: LOCAL - Composer install
+      command: composer install --no-interaction --no-progress --no-scripts --optimize-autoloader #--no-dev --no-plugins
+      args:
+        chdir: "{{ playbook_dir }}/website"
+
+    - name: LOCAL - Npm install
+      command: npm install
+      args:
+        chdir: "{{ playbook_dir }}/website"
+
+    - name: LOCAL - Npm build app
+      command: npm run dev #prod
+      args:
+        chdir: "{{ playbook_dir }}/website"
+
+    - name: LOCAL - Remove assets
+      file:
+        path: "{{ playbook_dir }}/website/assets"
+        state: absent
+
+    - name: LOCAL - Remove node_modules
+      file:
+        path: "{{ playbook_dir }}/website/node_modules"
+        state: absent
+
+    - name: LOCAL - Clean directory
+      file:
+        path: "{{ playbook_dir }}/website"
+        state: absent
