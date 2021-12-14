@@ -1,0 +1,9 @@
+- name: Before Symlink - Database Migrations
+  shell: php bin/console doctrine:migrations:migrate --no-interaction
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Before Symlink - Cache Warmup
+  shell: php bin/console cache:warmup
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"

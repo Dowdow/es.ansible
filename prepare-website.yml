@@ -3,7 +3,6 @@
   hosts: local
   connection: local
   tasks:
-    # Vérifier que php, composer, node et npm sont installés
     - name: LOCAL - Clean directory
       file:
         path: "{{ playbook_dir }}/website"
@@ -18,7 +17,7 @@
         accept_hostkey: yes
 
     - name: LOCAL - Composer install
-      command: composer install --no-interaction --no-progress --no-scripts --optimize-autoloader #--no-dev --no-plugins
+      command: composer install --no-interaction --no-progress --no-scripts --optimize-autoloader --no-dev
       args:
         chdir: "{{ playbook_dir }}/website"
 
@@ -28,9 +27,24 @@
         chdir: "{{ playbook_dir }}/website"
 
     - name: LOCAL - Npm build app
-      command: npm run dev #prod
+      command: npm run prod
       args:
         chdir: "{{ playbook_dir }}/website"
+
+    - name: LOCAL - Remove .git
+      file:
+        path: "{{ playbook_dir }}/website/.git"
+        state: absent
+
+    - name: LOCAL - Remove .gitignore
+      file:
+        path: "{{ playbook_dir }}/website/.gitignore"
+        state: absent
+
+    - name: LOCAL - Remove .env
+      file:
+        path: "{{ playbook_dir }}/website/.env"
+        state: absent
 
     - name: LOCAL - Remove assets
       file:
@@ -40,9 +54,4 @@
     - name: LOCAL - Remove node_modules
       file:
         path: "{{ playbook_dir }}/website/node_modules"
-        state: absent
-
-    - name: LOCAL - Clean directory
-      file:
-        path: "{{ playbook_dir }}/website"
         state: absent
