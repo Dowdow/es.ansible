@@ -6,7 +6,7 @@
     ansistrano_deploy_to: "."
     ansistrano_keep_releases: 3
     ansistrano_allow_anonymous_stats: no
-    ansistrano_shared_files: [".env", "public/.htaccess"]
+    ansistrano_shared_files: [".env", "public/.htaccess", "public/uploads"]
     ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/tasks/before-symlink-tasks.yml"
   roles:
-  - { role: ansistrano.deploy }
+    - { role: ansistrano.deploy }
