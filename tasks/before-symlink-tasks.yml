@@ -7,8 +7,3 @@
   shell: php bin/console cache:warmup
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
-
-- name: Before Symlink - Sitemap
-  shell: php bin/console app:sitemap
-  args:
-    chdir: "{{ ansistrano_release_path.stdout }}"
